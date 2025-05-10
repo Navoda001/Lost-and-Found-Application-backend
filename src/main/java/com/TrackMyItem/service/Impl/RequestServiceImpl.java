@@ -39,6 +39,8 @@ public class RequestServiceImpl implements RequestService {
             throw new RequestNotFoundException("Request Not Found");
         }
         foundRequest.get().setDecisionDate(utilData.generateTodayDate());
+        foundRequest.get().setRequestStatus(requestDto.getRequestStatus());
+        foundRequest.get().setMessage(requestDto.getMessage());
     }
 
     @Override
