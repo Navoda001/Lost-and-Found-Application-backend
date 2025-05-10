@@ -19,7 +19,7 @@ public class EntityDtoConverter {
     private final ModelMapper modelMapper;
 
     //Item
-    public ItemEntity convertItemDtoToBookEntity(ItemDto itemDto) {
+    public ItemEntity convertItemDtoToItemEntity(ItemDto itemDto) {
         return modelMapper.map(itemDto, ItemEntity.class);
     }
     public ItemDto convertItemEntityToItemDto(ItemEntity itemEntity) {

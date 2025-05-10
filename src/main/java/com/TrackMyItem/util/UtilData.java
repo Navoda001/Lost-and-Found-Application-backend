@@ -11,13 +11,15 @@ import org.hibernate.cache.spi.support.AbstractReadWriteAccess;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+
 public class UtilData {
         private static ItemDao itemDao;
         private static RequestDao requestDao;
         private static UserDao userDao;
 
         //ItemId
-    public String generateItemId() {
+    public static String generateItemId() {
         // Get the last inserted Item ordered by ID descending
         ItemEntity lastItem = itemDao.findTopByOrderByItemIdDesc();
 
@@ -34,7 +36,7 @@ public class UtilData {
     }
 
     //RequestId
-    public String generateRequestId() {
+    public static String generateRequestId() {
         // Get the last inserted Request ordered by ID descending
         RequestEntity lastRequest = requestDao.findTopByOrderByRequestIdDesc();
 
@@ -51,7 +53,7 @@ public class UtilData {
     }
 
     //UserId
-    public String generateUserId() {
+    public static String generateUserId() {
         // Get the last inserted Request ordered by ID descending
         UserEntity lastUser = userDao.findTopByOrderByUserIdDesc();
 
@@ -66,4 +68,10 @@ public class UtilData {
         // Format with leading zeros to ensure 3 digits
         return String.format("U%03d", lastNumber + 1);
     }
+
+    //Generate last updated date
+    public static LocalDate generateTodayDate(){
+        return LocalDate.now();
+    }
+
 }
