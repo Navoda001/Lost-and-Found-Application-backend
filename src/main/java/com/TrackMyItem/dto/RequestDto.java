@@ -18,4 +18,5 @@ public class RequestDto implements Serializable {
     private String message;
     private LocalDate requestDate;
     private LocalDate decisionDate;
+    private String getDecisionBy;
 }

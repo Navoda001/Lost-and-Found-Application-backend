@@ -29,4 +29,7 @@ public class UserEntity {
     private Role role;
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<RequestEntity> requests;
+    @OneToMany(mappedBy = "decisionUser")
+    private List<RequestEntity> decisionRequests;
+
 }

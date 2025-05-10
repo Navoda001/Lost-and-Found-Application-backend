@@ -27,4 +27,7 @@ public class RequestEntity {
     private String message;
     private LocalDate requestDate;
     private LocalDate decisionDate;
+    @ManyToOne
+    @JoinColumn(name = "getDecisionBy",nullable = true)
+    private UserEntity decisionUser;
 }
