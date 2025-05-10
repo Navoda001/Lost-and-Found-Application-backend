@@ -22,11 +22,12 @@ public class ItemServiceImpl implements ItemService {
 
     private final ItemDao itemDao;
     private final EntityDtoConverter entityDtoConverter;
+    private final UtilData utilData;
 
     @Override
     public void addItem(ItemDto itemDto) {
-    itemDto.setItemId(UtilData.generateItemId());
-    itemDto.setReportedDate(UtilData.generateTodayDate());
+    itemDto.setItemId(utilData.generateItemId());
+    itemDto.setReportedDate(utilData.generateTodayDate());
 
     itemDao.save(entityDtoConverter.convertItemDtoToItemEntity(itemDto));
 
@@ -39,11 +40,17 @@ public class ItemServiceImpl implements ItemService {
         if(!foundItem.isPresent()) {
             throw new ItemNotFoundException("Item Not Found");
         }
+        foundItem.get().setItemName(itemDto.getItemName());
+        foundItem.get().setItemDescription(itemDto.getItemDescription());
+        foundItem.get().setItemStatus(itemDto.getItemStatus());
+        foundItem.get().setLocation(itemDto.getLocation());
+        foundItem.get().setImage(itemDto.getImage());
+        foundItem.get().setItemStatus(itemDto.getItemStatus());
 
         if(itemDto.getItemStatus()==ItemStatuses.FOUND){
-            foundItem.get().setFoundDate(UtilData.generateTodayDate());
+            foundItem.get().setFoundDate(utilData.generateTodayDate());
         }else{
-            foundItem.get().setClaimedDate(UtilData.generateTodayDate());
+            foundItem.get().setClaimedDate(utilData.generateTodayDate());
         }
 
     }

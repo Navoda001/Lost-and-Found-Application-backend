@@ -21,11 +21,12 @@ import java.util.Optional;
 public class RequestServiceImpl implements RequestService {
     private final RequestDao requestDao;
     private final EntityDtoConverter entityDtoConverter;
+    private final UtilData utilData;
 
     @Override
     public void addRequest(RequestDto requestDto) {
-        requestDto.setRequestId(UtilData.generateRequestId());
-        requestDto.setRequestDate(UtilData.generateTodayDate());
+        requestDto.setRequestId(utilData.generateRequestId());
+        requestDto.setRequestDate(utilData.generateTodayDate());
         requestDto.setRequestStatus(RequestStatuses.PENDING);
         requestDao.save(entityDtoConverter.convertRequestDtoToRequestEntity(requestDto));
 
@@ -37,7 +38,7 @@ public class RequestServiceImpl implements RequestService {
         if(!foundRequest.isPresent()) {
             throw new RequestNotFoundException("Request Not Found");
         }
-        foundRequest.get().setDecisionDate(UtilData.generateTodayDate());
+        foundRequest.get().setDecisionDate(utilData.generateTodayDate());
     }
 
     @Override

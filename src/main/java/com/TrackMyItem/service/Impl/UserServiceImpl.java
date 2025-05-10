@@ -1,5 +1,6 @@
 package com.TrackMyItem.service.Impl;
 
+import com.TrackMyItem.dao.ItemDao;
 import com.TrackMyItem.dao.UserDao;
 import com.TrackMyItem.dto.UserAllDto;
 import com.TrackMyItem.dto.UserDto;
@@ -23,12 +24,13 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     private final UserDao userDao;
     private final EntityDtoConverter entityDtoConverter;
+    private final UtilData utilData;
 
     @Override
     public void addUser(UserDto userDto) {
-        userDto.setUserId(UtilData.generateUserId());
-        userDto.setLastLogin(UtilData.generateTodayDate());
-        userDto.setUpdatedAt(UtilData.generateTodayDate());
+        userDto.setUserId(utilData.generateUserId());
+        userDto.setLastLogin(utilData.generateTodayDate());
+        userDto.setUpdatedAt(utilData.generateTodayDate());
 
         userDao.save(entityDtoConverter.convertUserDtoToUserEntity(userDto));
     }
@@ -44,7 +46,7 @@ public class UserServiceImpl implements UserService {
         foundUser.get().setEmail(userDto.getEmail());
         foundUser.get().setPhone(userDto.getPhone());
 
-        foundUser.get().setUpdatedAt(UtilData.generateTodayDate());
+        foundUser.get().setUpdatedAt(utilData.generateTodayDate());
     }
 
     @Override

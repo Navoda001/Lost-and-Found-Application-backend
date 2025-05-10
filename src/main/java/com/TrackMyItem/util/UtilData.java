@@ -7,19 +7,24 @@ import com.TrackMyItem.entity.ItemEntity;
 import com.TrackMyItem.entity.RequestEntity;
 import com.TrackMyItem.entity.UserEntity;
 import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.cache.spi.support.AbstractReadWriteAccess;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
+@RequiredArgsConstructor
+@Component
 public class UtilData {
-        private static ItemDao itemDao;
-        private static RequestDao requestDao;
-        private static UserDao userDao;
+        private final ItemDao itemDao;
+        private final RequestDao requestDao;
+        private final UserDao userDao;
 
         //ItemId
-    public static String generateItemId() {
+    public  String generateItemId() {
         // Get the last inserted Item ordered by ID descending
         ItemEntity lastItem = itemDao.findTopByOrderByItemIdDesc();
 
@@ -36,7 +41,7 @@ public class UtilData {
     }
 
     //RequestId
-    public static String generateRequestId() {
+    public  String generateRequestId() {
         // Get the last inserted Request ordered by ID descending
         RequestEntity lastRequest = requestDao.findTopByOrderByRequestIdDesc();
 
@@ -53,7 +58,7 @@ public class UtilData {
     }
 
     //UserId
-    public static String generateUserId() {
+    public  String generateUserId() {
         // Get the last inserted Request ordered by ID descending
         UserEntity lastUser = userDao.findTopByOrderByUserIdDesc();
 
@@ -70,7 +75,7 @@ public class UtilData {
     }
 
     //Generate last updated date
-    public static LocalDate generateTodayDate(){
+    public  LocalDate generateTodayDate(){
         return LocalDate.now();
     }
 
