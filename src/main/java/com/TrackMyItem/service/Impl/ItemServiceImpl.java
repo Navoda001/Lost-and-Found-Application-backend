@@ -24,29 +24,45 @@ public class ItemServiceImpl implements ItemService {
     private final EntityDtoConverter entityDtoConverter;
 
     @Override
-    public void addItem(ItemDto itemDto) {
+    public void addFoundItem(ItemDto itemDto) {
+
     itemDto.setItemId(UtilData.generateItemId());
     itemDto.setReportedDate(UtilData.generateTodayDate());
-
+    itemDto.setItemStatus(ItemStatuses.FOUND);
     itemDao.save(entityDtoConverter.convertItemDtoToItemEntity(itemDto));
 
     }
 
     @Override
-    public void updateItem(String itemId, ItemDto itemDto) {
+    public void addLostItem(ItemDto itemDto) {
+
+        itemDto.setItemId(UtilData.generateItemId());
+        itemDto.setReportedDate(UtilData.generateTodayDate());
+        itemDto.setItemStatus(ItemStatuses.LOST);
+        itemDao.save(entityDtoConverter.convertItemDtoToItemEntity(itemDto));
+
+    }
+
+    @Override
+    public void updateLostItem(String itemId, ItemDto itemDto) {
 
         Optional<ItemEntity> foundItem = itemDao.findById(itemId);
         if(!foundItem.isPresent()) {
             throw new ItemNotFoundException("Item Not Found");
         }
+        foundItem.get().setFoundDate(UtilData.generateTodayDate());
+        foundItem.get().setItemStatus(ItemStatuses.FOUND);
 
-        if(itemDto.getItemStatus()==ItemStatuses.FOUND){
-            foundItem.get().setFoundDate(UtilData.generateTodayDate());
-            foundItem.get().setItemStatus(ItemStatuses.FOUND);
-        }else{
-            foundItem.get().setClaimedDate(UtilData.generateTodayDate());
-            foundItem.get().setItemStatus(ItemStatuses.CLAIMED);
+    }
+    @Override
+    public void updateFoundItem(String itemId, ItemDto itemDto) {
+
+        Optional<ItemEntity> foundItem = itemDao.findById(itemId);
+        if(!foundItem.isPresent()) {
+            throw new ItemNotFoundException("Item Not Found");
         }
+        foundItem.get().setClaimedDate(UtilData.generateTodayDate());
+        foundItem.get().setItemStatus(ItemStatuses.CLAIMED);
 
     }
 
