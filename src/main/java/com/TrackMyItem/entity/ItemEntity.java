@@ -27,6 +27,6 @@ public class ItemEntity {
     private String reportedBy;
     private String claimedBy;
     private LocalDate claimedDate;
-    @OneToMany(mappedBy = "Item",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "item",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<RequestEntity> requests;
 }

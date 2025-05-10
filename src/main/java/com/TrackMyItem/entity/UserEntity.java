@@ -27,6 +27,6 @@ public class UserEntity {
     private LocalDate updatedAt;
     @Enumerated(EnumType.STRING)
     private Role role;
-    @OneToMany(mappedBy = "User",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<RequestEntity> requests;
 }

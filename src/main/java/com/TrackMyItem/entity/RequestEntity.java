@@ -18,10 +18,10 @@ public class RequestEntity {
     private String requestId;
     @ManyToOne
     @JoinColumn(name = "itemId",nullable = false)
-    private ItemEntity itemId;
+    private ItemEntity item;
     @ManyToOne
     @JoinColumn(name = "userId",nullable = false)
-    private UserEntity userId;
+    private UserEntity user;
     @Enumerated(EnumType.STRING)
     private RequestStatuses requestStatus;
     private String message;
