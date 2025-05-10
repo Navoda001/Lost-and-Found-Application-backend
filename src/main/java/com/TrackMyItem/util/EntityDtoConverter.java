@@ -2,6 +2,7 @@ package com.TrackMyItem.util;
 
 import com.TrackMyItem.dto.ItemDto;
 import com.TrackMyItem.dto.RequestDto;
+import com.TrackMyItem.dto.UserAllDto;
 import com.TrackMyItem.dto.UserDto;
 import com.TrackMyItem.entity.ItemEntity;
 import com.TrackMyItem.entity.RequestEntity;
@@ -49,6 +50,9 @@ public class EntityDtoConverter {
     }
     public List<UserDto> toUserDtoList(List<UserEntity> userEntityList) {
         return modelMapper.map(userEntityList, new TypeToken<List<UserDto>>(){}.getType());
+    }
+    public List<UserAllDto> toUserAllDtoList(List<UserEntity> userEntityList) {
+        return modelMapper.map(userEntityList, new TypeToken<List<UserAllDto>>(){}.getType());
     }
 
 }
