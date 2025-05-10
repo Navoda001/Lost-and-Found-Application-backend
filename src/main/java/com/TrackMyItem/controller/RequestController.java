@@ -48,7 +48,7 @@ public class RequestController {
 
 
     @PatchMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> updateRequest (@RequestParam("requestId") String requestId, RequestDto requestDto){
+    public ResponseEntity<Void> updateRequest (@RequestParam("requestId") String requestId, @RequestBody RequestDto requestDto){
         if(requestId==null || requestDto==null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
