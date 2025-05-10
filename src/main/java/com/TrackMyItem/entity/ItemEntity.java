@@ -22,9 +22,11 @@ public class ItemEntity {
     private String location;
     @Enumerated(EnumType.STRING)
     private ItemStatuses itemStatus;
-    private LocalDate reportedDate;
     private byte[] image;
     private String reportedBy;
+    private LocalDate reportedDate;
+    private String foundBy;
+    private LocalDate foundDate;
     private String claimedBy;
     private LocalDate claimedDate;
     @OneToMany(mappedBy = "item",cascade = CascadeType.ALL,orphanRemoval = true)

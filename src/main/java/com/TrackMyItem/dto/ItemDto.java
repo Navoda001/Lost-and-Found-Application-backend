@@ -19,6 +19,8 @@ public class ItemDto implements Serializable {
     private LocalDate reportedDate;
     private byte[] image;
     private String reportedBy;
+    private String foundBy;
+    private LocalDate foundDate;
     private String claimedBy;
     private LocalDate claimedDate;
 }
