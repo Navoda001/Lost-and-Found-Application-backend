@@ -1,13 +1,21 @@
 package com.TrackMyItem.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class RequestDto {
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+public class RequestDto implements Serializable {
     private String requestId;
     private String itemId;
     private String userId;
-    public RequestStatuses requestStatus;
-    public String message;
-    public LocalDate requestDate;
-    public LocalDate decisionDate;
+    private RequestStatuses requestStatus;
+    private String message;
+    private LocalDate requestDate;
+    private LocalDate decisionDate;
 }
