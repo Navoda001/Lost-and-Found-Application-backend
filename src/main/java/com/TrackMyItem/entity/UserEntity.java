@@ -1,16 +1,21 @@
-package com.TrackMyItem.dto;
+package com.TrackMyItem.entity;
 
+import com.TrackMyItem.dto.Role;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class UserDto implements Serializable {
+@Entity
+@Table(name = "User")
+public class UserEntity {
+    @Id
     private String userId;
     private String firstName;
     private String lastName;
@@ -20,5 +25,8 @@ public class UserDto implements Serializable {
     private LocalDate joinDate;
     private LocalDate lastLogin;
     private LocalDate updatedAt;
+    @Enumerated(EnumType.STRING)
     private Role role;
+    @OneToMany(mappedBy = "User",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<RequestEntity> requests;
 }
