@@ -50,7 +50,7 @@ public class ItemController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         try {
-            itemService.updateItem(itemId, itemDto);
+            itemService.foundItem(itemId, itemDto);
             return ResponseEntity.noContent().build();
         }catch (ItemNotFoundException e){
             e.printStackTrace();
