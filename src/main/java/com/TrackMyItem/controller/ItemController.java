@@ -4,7 +4,6 @@ import com.TrackMyItem.dto.ItemDto;
 import com.TrackMyItem.exception.ItemNotFoundException;
 import com.TrackMyItem.service.ItemService;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.cache.spi.support.AbstractReadWriteAccess;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

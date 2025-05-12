@@ -22,7 +22,9 @@ public class ItemEntity {
     private String location;
     @Enumerated(EnumType.STRING)
     private ItemStatuses itemStatus;
-    private byte[] image;
+    @Lob
+    @Column(columnDefinition = "MEDIUMBLOB")
+    private String image;
     private String reportedBy;
     private LocalDate reportedDate;
     private String foundBy;
