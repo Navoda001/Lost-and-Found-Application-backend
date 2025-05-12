@@ -12,7 +12,9 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "Request")
+@Table(name = "Request",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"userId", "itemId"})
+)
 public class RequestEntity {
     @Id
     private String requestId;
