@@ -1,6 +1,7 @@
 package com.TrackMyItem.controller;
 
 import com.TrackMyItem.dto.RequestDto;
+import com.TrackMyItem.exception.RequestAlreadyExistsException;
 import com.TrackMyItem.exception.RequestNotFoundException;
 import com.TrackMyItem.service.RequestService;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +23,12 @@ public class RequestController {
         if(requestDto==null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        requestService.addRequest(requestDto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        try{
+            requestService.addRequest(requestDto);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        }catch (RequestAlreadyExistsException e){
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
     }
 
     @DeleteMapping

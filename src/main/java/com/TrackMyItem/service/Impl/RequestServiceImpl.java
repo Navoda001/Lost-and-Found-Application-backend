@@ -4,6 +4,7 @@ import com.TrackMyItem.dao.RequestDao;
 import com.TrackMyItem.dto.RequestDto;
 import com.TrackMyItem.dto.RequestStatuses;
 import com.TrackMyItem.entity.RequestEntity;
+import com.TrackMyItem.exception.RequestAlreadyExistsException;
 import com.TrackMyItem.exception.RequestNotFoundException;
 import com.TrackMyItem.service.RequestService;
 import com.TrackMyItem.util.EntityDtoConverter;
@@ -25,10 +26,15 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     public void addRequest(RequestDto requestDto) {
-        requestDto.setRequestId(utilData.generateRequestId());
-        requestDto.setRequestDate(utilData.generateTodayDate());
-        requestDto.setRequestStatus(RequestStatuses.PENDING);
-        requestDao.save(entityDtoConverter.convertRequestDtoToRequestEntity(requestDto));
+        try{
+            requestDto.setRequestId(utilData.generateRequestId());
+            requestDto.setRequestDate(utilData.generateTodayDate());
+            requestDto.setRequestStatus(RequestStatuses.PENDING);
+            requestDao.save(entityDtoConverter.convertRequestDtoToRequestEntity(requestDto));
+
+        } catch (Exception e) {
+            throw new RequestAlreadyExistsException("Request already exists");
+        }
 
     }
 
