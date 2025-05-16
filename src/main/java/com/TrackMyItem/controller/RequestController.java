@@ -1,5 +1,7 @@
 package com.TrackMyItem.controller;
 
+import com.TrackMyItem.dto.ItemDto;
+import com.TrackMyItem.dto.RequestAllDetailsDto;
 import com.TrackMyItem.dto.RequestDto;
 import com.TrackMyItem.exception.RequestAlreadyExistsException;
 import com.TrackMyItem.exception.RequestNotFoundException;
@@ -77,7 +79,6 @@ public class RequestController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         try {
-            requestService.getRequestById(requestId);
             return new ResponseEntity<>(requestService.getRequestById(requestId), HttpStatus.OK);
         }catch (RequestNotFoundException e){
             e.printStackTrace();
@@ -92,5 +93,27 @@ public class RequestController {
     @GetMapping("getAllRequests")
     public ResponseEntity<List<RequestDto>> getAllRequests() {
         return new ResponseEntity<>(requestService.getAllRequests(), HttpStatus.OK);
+    }
+
+    @GetMapping("getAllItems")
+    public ResponseEntity<List<ItemDto>> getAllItems() {
+        return new ResponseEntity<>(requestService.getAllItems(), HttpStatus.OK);
+    }
+
+    @GetMapping("getRequestsByItemId")
+    public ResponseEntity<List<RequestAllDetailsDto>>  getRequestsByItemId(@RequestParam("itemId") String itemId){
+        if(itemId==null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        try {
+            return new ResponseEntity<>(requestService.getAllRequestsByItemId(itemId), HttpStatus.OK);
+        }catch (RequestNotFoundException e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
