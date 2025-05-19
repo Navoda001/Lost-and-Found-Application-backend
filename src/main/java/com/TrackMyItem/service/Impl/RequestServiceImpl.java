@@ -3,10 +3,7 @@ package com.TrackMyItem.service.Impl;
 import com.TrackMyItem.dao.ItemDao;
 import com.TrackMyItem.dao.RequestDao;
 import com.TrackMyItem.dao.UserDao;
-import com.TrackMyItem.dto.ItemDto;
-import com.TrackMyItem.dto.RequestAllDetailsDto;
-import com.TrackMyItem.dto.RequestDto;
-import com.TrackMyItem.dto.RequestStatuses;
+import com.TrackMyItem.dto.*;
 import com.TrackMyItem.entity.ItemEntity;
 import com.TrackMyItem.entity.RequestEntity;
 import com.TrackMyItem.entity.UserEntity;
@@ -48,15 +45,36 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
+    @Transactional
     public void updateRequest(String requestId, RequestDto requestDto) {
-        Optional<RequestEntity> foundRequest = requestDao.findById(requestId);
-        if(!foundRequest.isPresent()) {
-            throw new RequestNotFoundException("Request Not Found");
+        RequestEntity foundRequest = requestDao.findById(requestId)
+                .orElseThrow(() -> new RequestNotFoundException("Request Not Found"));
+
+        if (requestDto.getRequestStatus() == RequestStatuses.APPROVED) {
+            ItemEntity foundItem = itemDao.findById(foundRequest.getItem().getItemId())
+                    .orElseThrow(() -> new RequestNotFoundException("Item Not Found"));
+
+
+            foundItem.setItemStatus(ItemStatuses.CLAIMED);
+            itemDao.save(foundItem);
+
+
+            List<RequestEntity> requests = requestDao.findByItem_ItemId(foundItem.getItemId());
+            for (RequestEntity request : requests) {
+                if (!request.getRequestId().equals(foundRequest.getRequestId())) {
+                    request.setRequestStatus(RequestStatuses.REJECTED);
+                    request.setDecisionDate(utilData.generateTodayDate());
+                }
+            }
+            requestDao.saveAll(requests);
         }
-        foundRequest.get().setDecisionDate(utilData.generateTodayDate());
-        foundRequest.get().setRequestStatus(requestDto.getRequestStatus());
-        foundRequest.get().setMessage(requestDto.getMessage());
+
+        foundRequest.setDecisionDate(utilData.generateTodayDate());
+        foundRequest.setRequestStatus(requestDto.getRequestStatus());
+        foundRequest.setMessage(requestDto.getMessage());
+        requestDao.save(foundRequest);
     }
+
 
     @Override
     public void deleteRequest(String requestId) {
