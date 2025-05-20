@@ -100,16 +100,39 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public List<ItemDto> getAllItems() {
-        List<String> itemIds = requestDao.findDistinctUserIds();
-        System.out.println("itemIds" + itemIds);
+    public List<RequestItemDto> getAllItems() {
+        List<String> itemIds = requestDao.findDistinctItemIds();
+        List<RequestItemDto> requestItemDtos = new ArrayList<>();
 
-        List<ItemDto> itemDtos = new ArrayList<>();
-        for(String itemId : itemIds) {
-            itemDtos.add(entityDtoConverter.convertItemEntityToItemDto(itemDao.findById(itemId).get()));
+        for (String itemId : itemIds) {
+            itemDao.findById(itemId).ifPresent(itemEntity -> {
+                ItemDto itemDto = entityDtoConverter.convertItemEntityToItemDto(itemEntity);
+
+                RequestItemDto requestItemDto = new RequestItemDto();
+                // Manually copy fields
+                requestItemDto.setItemId(itemDto.getItemId());
+                requestItemDto.setItemName(itemDto.getItemName());
+                requestItemDto.setItemDescription(itemDto.getItemDescription());
+                requestItemDto.setLocation(itemDto.getLocation());
+                requestItemDto.setItemStatus(itemDto.getItemStatus());
+                requestItemDto.setReportedDate(itemDto.getReportedDate());
+                requestItemDto.setImage(itemDto.getImage());
+                requestItemDto.setReportedBy(itemDto.getReportedBy());
+                requestItemDto.setFoundBy(itemDto.getFoundBy());
+                requestItemDto.setFoundDate(itemDto.getFoundDate());
+                requestItemDto.setClaimedBy(itemDto.getClaimedBy());
+                requestItemDto.setClaimedDate(itemDto.getClaimedDate());
+
+                int requestCount = requestDao.countByItem_ItemId(itemId); // Note underscore here!
+                requestItemDto.setRequestCount(requestCount);
+
+                requestItemDtos.add(requestItemDto);
+            });
         }
-        return itemDtos;
+
+        return requestItemDtos;
     }
+
 
     @Override
     public List<RequestAllDetailsDto> getAllRequestsByItemId(String itemId) {

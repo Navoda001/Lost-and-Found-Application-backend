@@ -10,8 +10,10 @@ import java.util.List;
 public interface RequestDao extends JpaRepository<RequestEntity,String> {
     RequestEntity findTopByOrderByRequestIdDesc();
     @Query("SELECT DISTINCT r.item.itemId FROM RequestEntity r")
-    List<String> findDistinctUserIds();
+    List<String> findDistinctItemIds();
 
     List<RequestEntity> findByItem_ItemId(String itemId);
+
+    int countByItem_ItemId(String itemId); // ✅ This will work
 
 }

@@ -3,6 +3,7 @@ package com.TrackMyItem.controller;
 import com.TrackMyItem.dto.ItemDto;
 import com.TrackMyItem.dto.RequestAllDetailsDto;
 import com.TrackMyItem.dto.RequestDto;
+import com.TrackMyItem.dto.RequestItemDto;
 import com.TrackMyItem.exception.RequestAlreadyExistsException;
 import com.TrackMyItem.exception.RequestNotFoundException;
 import com.TrackMyItem.service.RequestService;
@@ -96,7 +97,7 @@ public class RequestController {
     }
 
     @GetMapping("getAllItems")
-    public ResponseEntity<List<ItemDto>> getAllItems() {
+    public ResponseEntity<List<RequestItemDto>> getAllItems() {
         return new ResponseEntity<>(requestService.getAllItems(), HttpStatus.OK);
     }
 
