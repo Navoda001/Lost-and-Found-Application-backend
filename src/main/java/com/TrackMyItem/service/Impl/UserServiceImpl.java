@@ -31,7 +31,8 @@ public class UserServiceImpl implements UserService {
         userDto.setUserId(utilData.generateUserId());
         userDto.setLastLogin(utilData.generateTodayDate());
         userDto.setUpdatedAt(utilData.generateTodayDate());
-
+        userDto.setJoinDate(utilData.generateTodayDate());
+        userDto.setRole(userDto.getRole());
         userDao.save(entityDtoConverter.convertUserDtoToUserEntity(userDto));
     }
 
@@ -44,7 +45,7 @@ public class UserServiceImpl implements UserService {
         foundUser.get().setFirstName(userDto.getFirstName());
         foundUser.get().setLastName(userDto.getLastName());
         foundUser.get().setEmail(userDto.getEmail());
-        foundUser.get().setPhone(userDto.getPhone());
+        foundUser.get().setPhoneNumber(userDto.getPhoneNumber());
 
         foundUser.get().setUpdatedAt(utilData.generateTodayDate());
     }

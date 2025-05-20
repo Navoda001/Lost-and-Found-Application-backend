@@ -20,7 +20,10 @@ public class UserEntity {
     private String firstName;
     private String lastName;
     private String email;
-    private String phone;
+    private String phoneNumber;
+    @Lob
+    @Column(columnDefinition = "MEDIUMBLOB")
+    private String image;
     private String password;
     private LocalDate joinDate;
     private LocalDate lastLogin;
