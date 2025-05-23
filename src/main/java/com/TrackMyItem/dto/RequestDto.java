@@ -14,9 +14,11 @@ public class RequestDto implements Serializable {
     private String requestId;
     private String itemId;
     private String userId;
+    private String requestEmail;
     private RequestStatuses requestStatus;
     private String message;
     private LocalDate requestDate;
     private LocalDate decisionDate;
     private String getDecisionBy;
+    private String decisionEmail;
 }

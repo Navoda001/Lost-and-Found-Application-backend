@@ -54,13 +54,31 @@ public class UserController {
         }
     }
 
-    @GetMapping
-    public ResponseEntity<UserDto> getUser(@RequestBody String email) {
+    @GetMapping("getUserByEmail")
+    public ResponseEntity<UserDto> getUserByEmail(@RequestBody String email) {
         if (email == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         try {
             UserDto userDto = userService.getUserByEmail(email);
+            return new ResponseEntity<>(userDto, HttpStatus.OK);
+        }catch (UserNotFoundException e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity<UserDto> getUserById(@RequestParam("userId") String userId) {
+        if (userId == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        try {
+            UserDto userDto = userService.getUserById(userId);
             return new ResponseEntity<>(userDto, HttpStatus.OK);
         }catch (UserNotFoundException e){
             e.printStackTrace();

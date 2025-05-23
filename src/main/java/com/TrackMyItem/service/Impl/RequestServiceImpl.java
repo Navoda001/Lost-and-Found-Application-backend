@@ -1,13 +1,8 @@
 package com.TrackMyItem.service.Impl;
 
-import com.TrackMyItem.dao.ItemDao;
-import com.TrackMyItem.dao.RequestDao;
-import com.TrackMyItem.dao.UserDao;
+import com.TrackMyItem.dao.*;
 import com.TrackMyItem.dto.*;
-import com.TrackMyItem.entity.ItemEntity;
-import com.TrackMyItem.entity.RequestEntity;
-import com.TrackMyItem.entity.StaffEntity;
-import com.TrackMyItem.entity.UserEntity;
+import com.TrackMyItem.entity.*;
 import com.TrackMyItem.exception.RequestAlreadyExistsException;
 import com.TrackMyItem.exception.RequestNotFoundException;
 import com.TrackMyItem.service.RequestService;
@@ -30,13 +25,17 @@ public class RequestServiceImpl implements RequestService {
     private final ItemDao itemDao;
     private final UserDao userDao;
     private final UtilData utilData;
+    private final AdminDao adminDao;
+    private final StaffDao staffDao;
 
     @Override
     public void addRequest(RequestDto requestDto) {
         try{
+            Optional<UserEntity> foundUser = userDao.findByEmail(requestDto.getRequestEmail());
             requestDto.setRequestId(utilData.generateRequestId());
             requestDto.setRequestDate(utilData.generateTodayDate());
             requestDto.setRequestStatus(RequestStatuses.PENDING);
+            requestDto.setUserId(foundUser.get().getUserId());
             requestDao.save(entityDtoConverter.convertRequestDtoToRequestEntity(requestDto));
 
         } catch (Exception e) {
@@ -50,6 +49,8 @@ public class RequestServiceImpl implements RequestService {
     public void updateRequest(String requestId, RequestDto requestDto) {
         RequestEntity foundRequest = requestDao.findById(requestId)
                 .orElseThrow(() -> new RequestNotFoundException("Request Not Found"));
+
+        Optional<StaffEntity> foundStaff = staffDao.findByEmail(requestDto.getDecisionEmail());
 
         if (requestDto.getRequestStatus() == RequestStatuses.APPROVED) {
             ItemEntity foundItem = itemDao.findById(foundRequest.getItem().getItemId())
@@ -74,6 +75,7 @@ public class RequestServiceImpl implements RequestService {
         foundRequest.setDecisionDate(utilData.generateTodayDate());
         foundRequest.setRequestStatus(requestDto.getRequestStatus());
         foundRequest.setMessage(requestDto.getMessage());
+        foundRequest.setDecisionUser(foundStaff.get());
         requestDao.save(foundRequest);
     }
 
