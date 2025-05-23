@@ -6,6 +6,7 @@ import com.TrackMyItem.dao.UserDao;
 import com.TrackMyItem.dto.*;
 import com.TrackMyItem.entity.ItemEntity;
 import com.TrackMyItem.entity.RequestEntity;
+import com.TrackMyItem.entity.StaffEntity;
 import com.TrackMyItem.entity.UserEntity;
 import com.TrackMyItem.exception.RequestAlreadyExistsException;
 import com.TrackMyItem.exception.RequestNotFoundException;
@@ -143,7 +144,7 @@ public class RequestServiceImpl implements RequestService {
         for (RequestEntity request : requests) {
             UserEntity user = request.getUser();
             ItemEntity item = request.getItem();
-            UserEntity decisionUser = request.getDecisionUser();
+            StaffEntity decisionUser = request.getDecisionUser();
 
             RequestAllDetailsDto dto = new RequestAllDetailsDto();
             dto.setRequestId(request.getRequestId());
@@ -155,7 +156,7 @@ public class RequestServiceImpl implements RequestService {
             dto.setMessage(request.getMessage());
             dto.setRequestDate(request.getRequestDate());
             dto.setDecisionDate(request.getDecisionDate());
-            dto.setGetDecisionBy(decisionUser != null ? decisionUser.getUserId() : null);
+            dto.setGetDecisionBy(decisionUser != null ? decisionUser.getStaffId() : null);
 
             dtos.add(dto);
         }

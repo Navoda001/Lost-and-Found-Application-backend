@@ -18,22 +18,13 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> createUser(@RequestBody UserDto userDto) {
-        if (userDto == null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        userService.addUser(userDto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
-
     @DeleteMapping
-    public ResponseEntity<Void> deleteUser(@RequestParam("userId") String userId) {
-        if (userId == null){
+    public ResponseEntity<Void> deleteUser(@RequestBody String email) {
+        if (email == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         try {
-            userService.deleteUser(userId);
+            userService.deleteUser(email);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         catch (UserNotFoundException e){
@@ -46,12 +37,12 @@ public class UserController {
     }
 
     @PatchMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> updateUser(@RequestParam("userId") String userId, @RequestBody UserDto userDto) {
-        if (userDto == null || userId == null){
+    public ResponseEntity<Void> updateUser(@RequestBody UserDto userDto) {
+        if (userDto == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         try {
-            userService.updateUser(userId, userDto);
+            userService.updateUser(userDto);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }catch (UserNotFoundException e){
             e.printStackTrace();
@@ -64,12 +55,12 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<UserDto> getUser(@RequestParam("userId") String userId) {
-        if (userId == null){
+    public ResponseEntity<UserDto> getUser(@RequestBody String email) {
+        if (email == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         try {
-            UserDto userDto = userService.getUserById(userId);
+            UserDto userDto = userService.getUserByEmail(email);
             return new ResponseEntity<>(userDto, HttpStatus.OK);
         }catch (UserNotFoundException e){
             e.printStackTrace();

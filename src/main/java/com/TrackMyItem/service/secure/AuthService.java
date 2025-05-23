@@ -8,4 +8,5 @@ import com.TrackMyItem.dto.secure.SignIn;
 public interface AuthService {
     JWTAuthResponse signIn(SignIn signIn);
     JWTAuthResponse signUp(AllUsersDto allUsersDto);
+    void updateUserPassword(AllUsersDto allUsersDto);
 }
