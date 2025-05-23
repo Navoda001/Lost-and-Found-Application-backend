@@ -1,9 +1,11 @@
 package com.TrackMyItem.service.Impl;
 
 import com.TrackMyItem.dao.ItemDao;
+import com.TrackMyItem.dao.UserDao;
 import com.TrackMyItem.dto.ItemDto;
 import com.TrackMyItem.dto.ItemStatuses;
 import com.TrackMyItem.entity.ItemEntity;
+import com.TrackMyItem.entity.UserEntity;
 import com.TrackMyItem.exception.ItemNotFoundException;
 import com.TrackMyItem.service.ItemService;
 import com.TrackMyItem.util.EntityDtoConverter;
@@ -24,11 +26,22 @@ public class ItemServiceImpl implements ItemService {
     private final ItemDao itemDao;
     private final EntityDtoConverter entityDtoConverter;
     private final UtilData utilData;
+    private final UserDao userDao;
 
     @Override
     public void addItem(ItemDto itemDto) {
-    itemDto.setItemId(utilData.generateItemId());
-    itemDto.setReportedDate(utilData.generateTodayDate());
+    if(itemDto.getItemStatus() == ItemStatuses.FOUND){
+        itemDto.setItemId(utilData.generateItemId());
+        itemDto.setReportedBy(itemDto.getReportedBy());
+        itemDto.setReportedDate(utilData.generateTodayDate());
+        itemDto.setFoundDate(utilData.generateTodayDate());
+        itemDto.setFoundBy(itemDto.getReportedBy());
+    }else{
+        itemDto.setItemId(utilData.generateItemId());
+        itemDto.setReportedBy(itemDto.getReportedBy());
+        itemDto.setReportedDate(utilData.generateTodayDate());
+
+    }
 
     itemDao.save(entityDtoConverter.convertItemDtoToItemEntity(itemDto));
 
@@ -38,17 +51,16 @@ public class ItemServiceImpl implements ItemService {
     public void foundItem(String itemId, ItemDto itemDto) {
 
         Optional<ItemEntity> foundItem = itemDao.findById(itemId);
+        Optional<UserEntity> foundUser = userDao.findByEmail(itemDto.getFoundBy());
         if(!foundItem.isPresent()) {
             throw new ItemNotFoundException("Item Not Found");
         }
 
-        foundItem.get().setItemStatus(itemDto.getItemStatus());
+        foundItem.get().setItemStatus(ItemStatuses.FOUND);
 
-        if(itemDto.getItemStatus()==ItemStatuses.FOUND){
             foundItem.get().setFoundDate(utilData.generateTodayDate());
-        }else{
-            foundItem.get().setClaimedDate(utilData.generateTodayDate());
-        }
+            foundItem.get().setFoundBy(foundUser.get().getUserId());
+
 
     }
 
