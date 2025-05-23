@@ -3,9 +3,11 @@ package com.TrackMyItem.util;
 import com.TrackMyItem.dao.ItemDao;
 import com.TrackMyItem.dao.RequestDao;
 import com.TrackMyItem.dao.UserDao;
+import com.TrackMyItem.dao.secure.AllUsersDao;
 import com.TrackMyItem.entity.ItemEntity;
 import com.TrackMyItem.entity.RequestEntity;
 import com.TrackMyItem.entity.UserEntity;
+import com.TrackMyItem.entity.secure.AllUsersEntity;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.cache.spi.support.AbstractReadWriteAccess;
@@ -22,6 +24,7 @@ public class UtilData {
         private final ItemDao itemDao;
         private final RequestDao requestDao;
         private final UserDao userDao;
+        private final AllUsersDao allUsersDao;
 
         //ItemId
     public  String generateItemId() {
@@ -72,6 +75,22 @@ public class UtilData {
 
         // Format with leading zeros to ensure 3 digits
         return String.format("U%03d", lastNumber + 1);
+    }
+
+    public  String generateAllUsersId() {
+        // Get the last inserted Request ordered by ID descending
+        AllUsersEntity lastUser = allUsersDao.findTopByOrderByUserIdDesc();
+
+        if (lastUser == null) {
+            return "AU001"; // Start with AU001 if no doctors exist
+        }
+
+        // Extract numeric part of the ID and increment
+        String lastId = lastUser.getUserId();
+        int lastNumber = Integer.parseInt(lastId.substring(1));
+
+        // Format with leading zeros to ensure 3 digits
+        return String.format("AU%03d", lastNumber + 1);
     }
 
     //Generate last updated date
