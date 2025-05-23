@@ -37,7 +37,9 @@ public class AdminServiceImpl implements AdminService {
         allUsersEntity.setPassword(passwordEncoder.encode("1234"));
         allUsersDao.save(allUsersEntity);
 
+        adminDto.setAdminId(utilData.generateAdminId());
         adminDto.setUpdatedAt(utilData.generateTodayDate());
+        adminDto.setRole(Role.ADMIN);
         adminDao.save(entityDtoConverter.toAdminEntity(adminDto));
     }
 

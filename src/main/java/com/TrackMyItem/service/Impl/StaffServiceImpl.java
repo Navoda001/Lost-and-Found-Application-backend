@@ -40,6 +40,7 @@ public class StaffServiceImpl implements StaffService {
         allUsersDao.save(allUsersEntity);
 
         staffDto.setStaffId(utilData.generateStaffId());
+        staffDto.setRole(Role.STAFF);
         staffDto.setCreatedAt(utilData.generateTodayDate());
         staffDto.setUpdatedAt(utilData.generateTodayDate());
         staffDao.save(entityDtoConverter.toStaffEntity(staffDto));
