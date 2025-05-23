@@ -1,5 +1,6 @@
 package com.TrackMyItem.controller;
 
+import com.TrackMyItem.dto.StaffDto;
 import com.TrackMyItem.dto.UserAllDto;
 import com.TrackMyItem.dto.UserDto;
 import com.TrackMyItem.exception.UserNotFoundException;
@@ -36,7 +37,25 @@ public class UserController {
         }
     }
 
-    @PatchMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PatchMapping(value = "/update-image",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> updateImage(@RequestBody UserDto userDto) {
+        if (userDto == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        try {
+            userService.updateImage(userDto);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }catch (UserNotFoundException e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PatchMapping(value = "/update-user",consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateUser(@RequestBody UserDto userDto) {
         if (userDto == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
