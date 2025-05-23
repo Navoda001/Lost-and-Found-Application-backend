@@ -1,9 +1,11 @@
 package com.TrackMyItem.util;
 
 import com.TrackMyItem.dto.*;
+import com.TrackMyItem.dto.secure.AllUsersDto;
 import com.TrackMyItem.entity.ItemEntity;
 import com.TrackMyItem.entity.RequestEntity;
 import com.TrackMyItem.entity.UserEntity;
+import com.TrackMyItem.entity.secure.AllUsersEntity;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -53,6 +55,14 @@ public class EntityDtoConverter {
     }
     public List<UserAllDto> toUserAllDtoList(List<UserEntity> userEntityList) {
         return modelMapper.map(userEntityList, new TypeToken<List<UserAllDto>>(){}.getType());
+    }
+
+    //AllUsers
+    public AllUsersDto allUsersDto (AllUsersEntity allUsersEntity) {
+        return modelMapper.map(allUsersEntity, AllUsersDto.class);
+    }
+    public AllUsersEntity toUserEntity (AllUsersDto allUsersDto) {
+        return modelMapper.map(allUsersDto, AllUsersEntity.class);
     }
 
 }
