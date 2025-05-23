@@ -39,6 +39,7 @@ public class StaffServiceImpl implements StaffService {
         allUsersEntity.setPassword(passwordEncoder.encode("1234"));
         allUsersDao.save(allUsersEntity);
 
+        staffDto.setStaffId(utilData.generateStaffId());
         staffDto.setCreatedAt(utilData.generateTodayDate());
         staffDto.setUpdatedAt(utilData.generateTodayDate());
         staffDao.save(entityDtoConverter.toStaffEntity(staffDto));
