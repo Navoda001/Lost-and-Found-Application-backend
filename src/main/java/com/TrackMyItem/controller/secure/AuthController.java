@@ -26,4 +26,9 @@ public class AuthController {
     public ResponseEntity<JWTAuthResponse> signUp(@RequestBody AllUsersDto signUp){
         return new ResponseEntity<>(authService.signUp(signUp),HttpStatus.CREATED);
     }
+    @PostMapping("changePassword")
+    public ResponseEntity<JWTAuthResponse> changePassword(@RequestBody AllUsersDto allUsersDto){
+        authService.updateUserPassword(allUsersDto);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
 }
