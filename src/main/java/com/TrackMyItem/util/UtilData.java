@@ -75,22 +75,26 @@ public class UtilData {
         return String.format("U%03d", lastNumber + 1);
     }
         //AllUserId
-    public  String generateAllUsersId() {
-        // Get the last inserted Request ordered by ID descending
-        AllUsersEntity lastUser = allUsersDao.findTopByOrderByUserIdDesc();
+        public String generateAllUsersId() {
+            AllUsersEntity lastUser = allUsersDao.findTopByOrderByUserIdDesc();
 
-        if (lastUser == null) {
-            return "AU001"; // Start with AU001 if no AllUsers exist
+            int nextNumber = 1; // Default if no user exists
+
+            if (lastUser != null) {
+                String lastId = lastUser.getUserId();
+
+                try {
+                    // Assuming the ID starts with "AU"
+                    nextNumber = Integer.parseInt(lastId.substring(2)) + 1;
+                } catch (NumberFormatException e) {
+                    throw new IllegalStateException("Invalid User ID format: " + lastId, e);
+                }
+            }
+
+            return String.format("AU%03d", nextNumber);
         }
 
-        // Extract numeric part of the ID and increment
-        String lastId = lastUser.getUserId();
-        int lastNumber = Integer.parseInt(lastId.substring(1));
-
-        // Format with leading zeros to ensure 3 digits
-        return String.format("AU%03d", lastNumber + 1);
-    }
-        //staff Id
+    //staff Id
     public  String generateStaffId() {
         // Get the last inserted Request ordered by ID descending
         StaffEntity lastUser = staffDao.findTopByOrderByStaffIdDesc();
