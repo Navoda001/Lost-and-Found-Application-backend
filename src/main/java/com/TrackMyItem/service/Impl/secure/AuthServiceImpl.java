@@ -84,7 +84,7 @@ public class AuthServiceImpl implements AuthService {
         userDto.setJoinDate(utilData.generateTodayDate());
         userDto.setLastLogin(utilData.generateTodayDate());
         userDto.setUpdatedAt(utilData.generateTodayDate());
-        userDto.setRole(allUsersDto.getRole());
+        userDto.setRole(Role.USER);
 
         userDao.save(entityDtoConvert.convertUserDtoToUserEntity(userDto));
 
