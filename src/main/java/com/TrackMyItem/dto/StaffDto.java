@@ -17,7 +17,7 @@ public class StaffDto implements Serializable {
     private String lastName;
     private String email;
     private String image;
-    private String createdAt;
+    private LocalDate createdAt;
     private LocalDate lastLogin;
     private LocalDate updatedAt;
     private Role role;
