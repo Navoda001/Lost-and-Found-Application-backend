@@ -31,35 +31,35 @@ public class StaffServiceImpl implements StaffService {
     private final EntityDtoConverter entityDtoConverter;
 
     @Override
-    public void addStaff(StaffDto staff) {
+    public void addStaff(StaffDto staffDto) {
         AllUsersEntity allUsersEntity = new AllUsersEntity();
         allUsersEntity.setUserId(utilData.generateAllUsersId());
-        allUsersEntity.setEmail(staff.getEmail());
+        allUsersEntity.setEmail(staffDto.getEmail());
         allUsersEntity.setRole(Role.STAFF);
         allUsersEntity.setPassword(passwordEncoder.encode("1234"));
         allUsersDao.save(allUsersEntity);
 
-        staff.setCreatedAt(utilData.generateTodayDate());
-        staff.setUpdatedAt(utilData.generateTodayDate());
-        staffDao.save(entityDtoConverter.toStaffEntity(staff));
+        staffDto.setCreatedAt(utilData.generateTodayDate());
+        staffDto.setUpdatedAt(utilData.generateTodayDate());
+        staffDao.save(entityDtoConverter.toStaffEntity(staffDto));
 
     }
 
     @Override
-    public void updateImage(StaffDto staff) {
-        Optional<StaffEntity> foundUser = staffDao.findByEmail(staff.getEmail());
-        foundUser.get().setImage(staff.getImage());
+    public void updateImage(StaffDto staffDto) {
+        Optional<StaffEntity> foundUser = staffDao.findByEmail(staffDto.getEmail());
+        foundUser.get().setImage(staffDto.getImage());
         foundUser.get().setUpdatedAt(utilData.generateTodayDate());
     }
 
     @Override
-    public void updateStaff(StaffDto staff) {
-        Optional<StaffEntity> foundUser = staffDao.findByEmail(staff.getEmail());
+    public void updateStaff(StaffDto staffDto) {
+        Optional<StaffEntity> foundUser = staffDao.findByEmail(staffDto.getEmail());
         if(!foundUser.isPresent()) {
             throw new UserNotFoundException("User Not Found");
         }
-        foundUser.get().setFirstName(staff.getFirstName());
-        foundUser.get().setLastName(staff.getLastName());
+        foundUser.get().setFirstName(staffDto.getFirstName());
+        foundUser.get().setLastName(staffDto.getLastName());
 
         foundUser.get().setUpdatedAt(utilData.generateTodayDate());
     }

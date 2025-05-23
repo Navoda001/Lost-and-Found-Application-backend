@@ -7,9 +7,9 @@ import com.TrackMyItem.dto.UserDto;
 import java.util.List;
 
 public interface StaffService {
-    void addStaff(StaffDto staff);
-    void updateStaff(StaffDto staff);
-    void updateImage(StaffDto staff);
+    void addStaff(StaffDto staffDto);
+    void updateStaff(StaffDto staffDto);
+    void updateImage(StaffDto staffDto);
     void deleteStaff(String email);
     StaffDto getStaffById(String staffId);
     StaffDto getStaffByemail(String email);

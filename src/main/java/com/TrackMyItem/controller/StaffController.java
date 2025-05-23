@@ -101,12 +101,12 @@ public class StaffController {
     }
 
     @GetMapping
-    public ResponseEntity<StaffDto> getStaffById(@RequestParam("staffId") String userId) {
-        if (userId == null){
+    public ResponseEntity<StaffDto> getStaffById(@RequestParam("staffId") String staffId) {
+        if (staffId == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         try {
-            StaffDto staffDto = staffService.getStaffById(userId);
+            StaffDto staffDto = staffService.getStaffById(staffId);
             return new ResponseEntity<>(staffDto, HttpStatus.OK);
         }catch (UserNotFoundException e){
             e.printStackTrace();
