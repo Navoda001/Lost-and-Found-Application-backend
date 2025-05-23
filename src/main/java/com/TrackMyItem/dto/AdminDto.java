@@ -1,5 +1,7 @@
 package com.TrackMyItem.dto;
 
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,14 +12,11 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class UserDto implements Serializable {
-    private String userId;
+public class AdminDto implements Serializable {
+    private String adminId;
     private String firstName;
     private String lastName;
     private String email;
-    private String phoneNumber;
-    private String image;
-    private LocalDate joinDate;
     private LocalDate lastLogin;
     private LocalDate updatedAt;
     private Role role;

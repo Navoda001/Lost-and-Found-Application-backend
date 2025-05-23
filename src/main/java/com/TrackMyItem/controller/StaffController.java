@@ -1,10 +1,10 @@
 package com.TrackMyItem.controller;
 
+import com.TrackMyItem.dto.ItemDto;
 import com.TrackMyItem.dto.StaffDto;
-import com.TrackMyItem.dto.UserAllDto;
 import com.TrackMyItem.dto.UserDto;
 import com.TrackMyItem.exception.UserNotFoundException;
-import com.TrackMyItem.service.UserService;
+import com.TrackMyItem.service.StaffService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,18 +14,29 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/v1/staffs")
 @RequiredArgsConstructor
-public class UserController {
-    private final UserService userService;
+public class StaffController {
+
+    private final StaffService staffService;
+
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> addStaff(@RequestBody StaffDto staffDto) {
+        if(staffDto== null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        staffService.addStaff(staffDto);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
 
     @DeleteMapping
-    public ResponseEntity<Void> deleteUser(@RequestBody String email) {
+    public ResponseEntity<Void> deleteStaff(@RequestBody String email) {
         if (email == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         try {
-            userService.deleteUser(email);
+            staffService.deleteStaff(email);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         catch (UserNotFoundException e){
@@ -37,50 +48,48 @@ public class UserController {
         }
     }
 
-    @PatchMapping(value = "update-image",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> updateImage(@RequestBody UserDto userDto) {
-        if (userDto == null){
+    @PatchMapping(value = "update-image", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> updateImage(@RequestBody StaffDto staffDto) {
+        if (staffDto == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         try {
-            userService.updateImage(userDto);
+            staffService.updateImage(staffDto);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }catch (UserNotFoundException e){
+        } catch (UserNotFoundException e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @PatchMapping(value = "update-user",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> updateUser(@RequestBody UserDto userDto) {
-        if (userDto == null){
+    @PatchMapping(value = "update-staff", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> updateStaff(@RequestBody StaffDto staffDto) {
+        if (staffDto == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         try {
-            userService.updateUser(userDto);
+            staffService.updateStaff(staffDto);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }catch (UserNotFoundException e){
+        } catch (UserNotFoundException e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @GetMapping("getUserByEmail")
-    public ResponseEntity<UserDto> getUserByEmail(@RequestBody String email) {
+    @GetMapping("getStaffByEmail")
+    public ResponseEntity<StaffDto> getStaffByEmail(@RequestBody String email) {
         if (email == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         try {
-            UserDto userDto = userService.getUserByEmail(email);
-            return new ResponseEntity<>(userDto, HttpStatus.OK);
+            StaffDto staffDto = staffService.getStaffByemail(email);
+            return new ResponseEntity<>(staffDto, HttpStatus.OK);
         }catch (UserNotFoundException e){
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -92,13 +101,13 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<UserDto> getUserById(@RequestParam("userId") String userId) {
-        if (userId == null){
+    public ResponseEntity<StaffDto> getStaffById(@RequestParam("staffId") String staffId) {
+        if (staffId == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         try {
-            UserDto userDto = userService.getUserById(userId);
-            return new ResponseEntity<>(userDto, HttpStatus.OK);
+            StaffDto staffDto = staffService.getStaffById(staffId);
+            return new ResponseEntity<>(staffDto, HttpStatus.OK);
         }catch (UserNotFoundException e){
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -108,11 +117,4 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-    @GetMapping("getAllUsers")
-    public ResponseEntity<List<UserAllDto>> getAllUsers() {
-        return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
-    }
-
 }
-

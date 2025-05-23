@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "Request",
+@Table(name = "request",
         uniqueConstraints = @UniqueConstraint(columnNames = {"userId", "itemId"})
 )
 public class RequestEntity {
@@ -31,5 +31,5 @@ public class RequestEntity {
     private LocalDate decisionDate;
     @ManyToOne
     @JoinColumn(name = "getDecisionBy",nullable = true)
-    private UserEntity decisionUser;
+    private StaffEntity decisionUser;
 }

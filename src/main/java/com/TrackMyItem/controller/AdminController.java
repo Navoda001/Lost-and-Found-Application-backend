@@ -1,31 +1,39 @@
 package com.TrackMyItem.controller;
 
+import com.TrackMyItem.dto.AdminDto;
 import com.TrackMyItem.dto.StaffDto;
-import com.TrackMyItem.dto.UserAllDto;
-import com.TrackMyItem.dto.UserDto;
 import com.TrackMyItem.exception.UserNotFoundException;
-import com.TrackMyItem.service.UserService;
+import com.TrackMyItem.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/v1/admins")
 @RequiredArgsConstructor
-public class UserController {
-    private final UserService userService;
+public class AdminController {
+    private final AdminService adminService;
+
+
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> addAdmin(@RequestBody AdminDto adminDto) {
+        if(adminDto== null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        adminService.addAdmin(adminDto);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
 
     @DeleteMapping
-    public ResponseEntity<Void> deleteUser(@RequestBody String email) {
+    public ResponseEntity<Void> deleteAdmin(@RequestBody String email) {
         if (email == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         try {
-            userService.deleteUser(email);
+            adminService.deleteAdmin(email);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         catch (UserNotFoundException e){
@@ -37,50 +45,31 @@ public class UserController {
         }
     }
 
-    @PatchMapping(value = "update-image",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> updateImage(@RequestBody UserDto userDto) {
-        if (userDto == null){
+    @PatchMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> updateAdmin(@RequestBody AdminDto adminDto) {
+        if (adminDto == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         try {
-            userService.updateImage(userDto);
+            adminService.updateAdmin(adminDto);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }catch (UserNotFoundException e){
+        } catch (UserNotFoundException e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @PatchMapping(value = "update-user",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> updateUser(@RequestBody UserDto userDto) {
-        if (userDto == null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        try {
-            userService.updateUser(userDto);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }catch (UserNotFoundException e){
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @GetMapping("getUserByEmail")
-    public ResponseEntity<UserDto> getUserByEmail(@RequestBody String email) {
+    @GetMapping("getAdminByEmail")
+    public ResponseEntity<AdminDto> getAdminByEmail(@RequestBody String email) {
         if (email == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         try {
-            UserDto userDto = userService.getUserByEmail(email);
-            return new ResponseEntity<>(userDto, HttpStatus.OK);
+            AdminDto adminDto = adminService.getAdminByEmail(email);
+            return new ResponseEntity<>(adminDto, HttpStatus.OK);
         }catch (UserNotFoundException e){
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -92,13 +81,13 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<UserDto> getUserById(@RequestParam("userId") String userId) {
-        if (userId == null){
+    public ResponseEntity<AdminDto> getAdminById(@RequestParam("adminId") String adminId) {
+        if (adminId == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         try {
-            UserDto userDto = userService.getUserById(userId);
-            return new ResponseEntity<>(userDto, HttpStatus.OK);
+            AdminDto adminDto = adminService.getAdminById(adminId);
+            return new ResponseEntity<>(adminDto, HttpStatus.OK);
         }catch (UserNotFoundException e){
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -108,11 +97,4 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-    @GetMapping("getAllUsers")
-    public ResponseEntity<List<UserAllDto>> getAllUsers() {
-        return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
-    }
-
 }
-

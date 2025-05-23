@@ -1,24 +1,19 @@
-package com.TrackMyItem.dto;
+package com.TrackMyItem.dto.secure;
 
+import com.TrackMyItem.dto.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
-import java.time.LocalDate;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class UserDto implements Serializable {
+public class AllUsersDto {
     private String userId;
     private String firstName;
     private String lastName;
     private String email;
     private String phoneNumber;
-    private String image;
-    private LocalDate joinDate;
-    private LocalDate lastLogin;
-    private LocalDate updatedAt;
+    private String password;
     private Role role;
 }

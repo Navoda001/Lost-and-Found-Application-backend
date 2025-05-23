@@ -1,9 +1,9 @@
 package com.TrackMyItem.util;
 
 import com.TrackMyItem.dto.*;
-import com.TrackMyItem.entity.ItemEntity;
-import com.TrackMyItem.entity.RequestEntity;
-import com.TrackMyItem.entity.UserEntity;
+import com.TrackMyItem.dto.secure.AllUsersDto;
+import com.TrackMyItem.entity.*;
+import com.TrackMyItem.entity.secure.AllUsersEntity;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -54,5 +54,31 @@ public class EntityDtoConverter {
     public List<UserAllDto> toUserAllDtoList(List<UserEntity> userEntityList) {
         return modelMapper.map(userEntityList, new TypeToken<List<UserAllDto>>(){}.getType());
     }
+
+    //Staff
+    public StaffDto toStaffDto(StaffEntity staffEntity) {
+        return modelMapper.map(staffEntity, StaffDto.class);
+    }
+    public StaffEntity toStaffEntity(StaffDto staffDto) {
+        return modelMapper.map(staffDto, StaffEntity.class);
+    }
+
+    //Admin
+    public AdminDto toAdminDto(AdminEntity adminEntity) {
+        return modelMapper.map(adminEntity, AdminDto.class);
+    }
+    public AdminEntity toAdminEntity(AdminDto adminDto) {
+        return modelMapper.map(adminDto, AdminEntity.class);
+    }
+
+    //AllUsers
+    public AllUsersDto allUsersDto (AllUsersEntity allUsersEntity) {
+        return modelMapper.map(allUsersEntity, AllUsersDto.class);
+    }
+    public AllUsersEntity toUserEntity (AllUsersDto allUsersDto) {
+        return modelMapper.map(allUsersDto, AllUsersEntity.class);
+    }
+
+
 
 }
