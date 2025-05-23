@@ -48,7 +48,7 @@ public class StaffController {
         }
     }
 
-    @PatchMapping(value = "/update-image", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PatchMapping(value = "update-image", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateImage(@RequestBody StaffDto staffDto) {
         if (staffDto == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -65,7 +65,7 @@ public class StaffController {
         }
     }
 
-    @PatchMapping(value = "/update-staff", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PatchMapping(value = "update-staff", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateStaff(@RequestBody StaffDto staffDto) {
         if (staffDto == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

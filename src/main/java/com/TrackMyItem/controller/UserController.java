@@ -37,7 +37,7 @@ public class UserController {
         }
     }
 
-    @PatchMapping(value = "/update-image",consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PatchMapping(value = "update-image",consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateImage(@RequestBody UserDto userDto) {
         if (userDto == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -55,7 +55,7 @@ public class UserController {
         }
     }
 
-    @PatchMapping(value = "/update-user",consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PatchMapping(value = "update-user",consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateUser(@RequestBody UserDto userDto) {
         if (userDto == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
