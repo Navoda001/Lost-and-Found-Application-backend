@@ -13,23 +13,21 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "user")
-public class UserEntity {
+@Table(name = "staff")
+public class StaffEntity {
     @Id
-    private String userId;
+    private String staffId;
     private String firstName;
     private String lastName;
     private String email;
-    private String phoneNumber;
     @Lob
     @Column(columnDefinition = "MEDIUMBLOB")
     private String image;
-    private LocalDate joinDate;
+    private String createdAt;
     private LocalDate lastLogin;
     private LocalDate updatedAt;
     @Enumerated(EnumType.STRING)
     private Role role;
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
-    private List<RequestEntity> requests;
-
+    @OneToMany(mappedBy = "decisionUser")
+    private List<RequestEntity> decisionRequests;
 }
