@@ -10,5 +10,6 @@ public interface ItemService {
     void foundItem(String itemId, ItemDto itemDto);
     void deleteItem(String itemId);
     ItemDto getItemById(String itemId);
+    List<ItemDto> getItemsByEmail(String email);
     List<ItemDto> getAllItems();
 }

@@ -79,6 +79,23 @@ public class ItemController {
         }
     }
 
+    @GetMapping("getItemsByEmail")
+    public ResponseEntity<List<ItemDto>> getItemsByEmail(@RequestParam("email") String email) {
+        if(email == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        try {
+            return new ResponseEntity<>(itemService.getItemsByEmail(email), HttpStatus.OK);
+        }
+        catch (ItemNotFoundException e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @GetMapping("getAllItems")
     public ResponseEntity<List<ItemDto>> getAllItems() {
         return new ResponseEntity<>(itemService.getAllItems(), HttpStatus.OK);
