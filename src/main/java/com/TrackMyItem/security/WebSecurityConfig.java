@@ -6,6 +6,7 @@ import com.TrackMyItem.security.jwt.AuthFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -56,6 +57,7 @@ public class WebSecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/api/v1/auth/**").permitAll()
+                                .requestMatchers(HttpMethod.PATCH, "/api/v1/auth/changePassword").hasAnyRole("USER,ADMIN,STAFF")
                                 //  .anyRequest().permitAll()
                                 //                          .requestMatchers("/api/v1/books").hasRole("ADMIN")
                                 //                           .requestMatchers("/api/v1/books").hasAnyRole("OFFICER,LIBRARIAN")

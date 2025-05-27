@@ -20,7 +20,7 @@ public class UserController {
     private final UserService userService;
 
     @DeleteMapping
-    public ResponseEntity<Void> deleteUser(@RequestBody String email) {
+    public ResponseEntity<Void> deleteUser(@RequestParam String email) {
         if (email == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -74,7 +74,7 @@ public class UserController {
     }
 
     @GetMapping("getUserByEmail")
-    public ResponseEntity<UserDto> getUserByEmail(@RequestBody String email) {
+    public ResponseEntity<UserDto> getUserByEmail(@RequestParam String email) {
         if (email == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
