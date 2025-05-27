@@ -65,6 +65,7 @@ public class RequestServiceImpl implements RequestService {
             for (RequestEntity request : requests) {
                 if (!request.getRequestId().equals(foundRequest.getRequestId())) {
                     request.setRequestStatus(RequestStatuses.REJECTED);
+                    request.setDecisionBy(foundStaff.get());
                     request.setDecisionDate(utilData.generateTodayDate());
                     request.setMessage("The owner has been found");
                 }
