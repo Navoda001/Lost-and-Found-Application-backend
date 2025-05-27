@@ -31,7 +31,7 @@ public class StaffController {
 
 
     @DeleteMapping
-    public ResponseEntity<Void> deleteStaff(@RequestBody String email) {
+    public ResponseEntity<Void> deleteStaff(@RequestParam("email") String email) {
         if (email == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -83,7 +83,7 @@ public class StaffController {
     }
 
     @GetMapping("getStaffByEmail")
-    public ResponseEntity<StaffDto> getStaffByEmail(@RequestBody String email) {
+    public ResponseEntity<StaffDto> getStaffByEmail(@RequestParam("email") String email) {
         if (email == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

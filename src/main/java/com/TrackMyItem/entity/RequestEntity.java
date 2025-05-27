@@ -31,5 +31,5 @@ public class RequestEntity {
     private LocalDate decisionDate;
     @ManyToOne
     @JoinColumn(name = "getDecisionBy",nullable = true)
-    private StaffEntity decisionUser;
+    private StaffEntity decisionBy;
 }

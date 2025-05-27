@@ -29,6 +29,6 @@ public class StaffEntity {
     private LocalDate updatedAt;
     @Enumerated(EnumType.STRING)
     private Role role;
-    @OneToMany(mappedBy = "decisionUser")
+    @OneToMany(mappedBy = "decisionBy")
     private List<RequestEntity> decisionRequests;
 }

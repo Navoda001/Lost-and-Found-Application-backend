@@ -65,6 +65,7 @@ public class RequestServiceImpl implements RequestService {
             for (RequestEntity request : requests) {
                 if (!request.getRequestId().equals(foundRequest.getRequestId())) {
                     request.setRequestStatus(RequestStatuses.REJECTED);
+                    request.setDecisionBy(foundStaff.get());
                     request.setDecisionDate(utilData.generateTodayDate());
                     request.setMessage("The owner has been found");
                 }
@@ -75,7 +76,7 @@ public class RequestServiceImpl implements RequestService {
         foundRequest.setDecisionDate(utilData.generateTodayDate());
         foundRequest.setRequestStatus(requestDto.getRequestStatus());
         foundRequest.setMessage(requestDto.getMessage());
-        foundRequest.setDecisionUser(foundStaff.get());
+        foundRequest.setDecisionBy(foundStaff.get());
         requestDao.save(foundRequest);
     }
 
@@ -146,7 +147,7 @@ public class RequestServiceImpl implements RequestService {
         for (RequestEntity request : requests) {
             UserEntity user = request.getUser();
             ItemEntity item = request.getItem();
-            StaffEntity decisionUser = request.getDecisionUser();
+            StaffEntity decisionUser = request.getDecisionBy();
 
             RequestAllDetailsDto dto = new RequestAllDetailsDto();
             dto.setRequestId(request.getRequestId());
@@ -166,6 +167,35 @@ public class RequestServiceImpl implements RequestService {
         return dtos;
     }
 
+    @Override
+    public List<RequestAllDetailsDto> getAllRequestsByEmail(String email) {
+        Optional<UserEntity> foundUser = userDao.findByEmail(email);
+        List<RequestEntity> requests = requestDao.findByUserId(foundUser.get().getUserId());
+        List<RequestAllDetailsDto> dtos = new ArrayList<>();
+
+        for (RequestEntity request : requests) {
+            UserEntity user = request.getUser();
+            ItemEntity item = request.getItem();
+            StaffEntity decisionUser = request.getDecisionBy();
+
+            RequestAllDetailsDto dto = new RequestAllDetailsDto();
+            dto.setRequestId(request.getRequestId());
+            dto.setItemId(item.getItemId());
+            dto.setItemName(item.getItemName());
+            dto.setUserId(user.getUserId());
+            dto.setUserName(user.getFirstName() + " " + user.getLastName());
+            dto.setRequestStatus(request.getRequestStatus());
+            dto.setImage(item.getImage());
+            dto.setMessage(request.getMessage());
+            dto.setRequestDate(request.getRequestDate());
+            dto.setDecisionDate(request.getDecisionDate());
+            dto.setGetDecisionBy(decisionUser != null ? decisionUser.getStaffId() : null);
+
+            dtos.add(dto);
+        }
+
+        return dtos;
+    }
 
 
 }

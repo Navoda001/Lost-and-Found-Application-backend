@@ -15,6 +15,7 @@ public class ItemDto implements Serializable {
     private String itemName;
     private String itemDescription;
     private String location;
+    private String email;
     private ItemStatuses itemStatus;
     private LocalDate reportedDate;
     private String image;

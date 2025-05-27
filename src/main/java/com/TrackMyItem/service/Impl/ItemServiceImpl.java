@@ -7,6 +7,7 @@ import com.TrackMyItem.dto.ItemStatuses;
 import com.TrackMyItem.entity.ItemEntity;
 import com.TrackMyItem.entity.UserEntity;
 import com.TrackMyItem.exception.ItemNotFoundException;
+import com.TrackMyItem.exception.UserNotFoundException;
 import com.TrackMyItem.service.ItemService;
 import com.TrackMyItem.util.EntityDtoConverter;
 import com.TrackMyItem.util.UtilData;
@@ -30,17 +31,22 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public void addItem(ItemDto itemDto) {
+        System.out.println(itemDto);
+        Optional<UserEntity> foundUser = userDao.findByEmail(itemDto.getEmail());
+        if(!foundUser.isPresent()){
+            throw new UserNotFoundException("user not found");
+        }
+
     if(itemDto.getItemStatus() == ItemStatuses.FOUND){
         itemDto.setItemId(utilData.generateItemId());
-        itemDto.setReportedBy(itemDto.getReportedBy());
+        itemDto.setReportedBy(foundUser.get().getUserId());
         itemDto.setReportedDate(utilData.generateTodayDate());
         itemDto.setFoundDate(utilData.generateTodayDate());
-        itemDto.setFoundBy(itemDto.getReportedBy());
+        itemDto.setFoundBy(foundUser.get().getUserId());
     }else{
         itemDto.setItemId(utilData.generateItemId());
-        itemDto.setReportedBy(itemDto.getReportedBy());
+        itemDto.setReportedBy(foundUser.get().getUserId());
         itemDto.setReportedDate(utilData.generateTodayDate());
-
     }
 
     itemDao.save(entityDtoConverter.convertItemDtoToItemEntity(itemDto));
@@ -51,9 +57,12 @@ public class ItemServiceImpl implements ItemService {
     public void foundItem(String itemId, ItemDto itemDto) {
 
         Optional<ItemEntity> foundItem = itemDao.findById(itemId);
-        Optional<UserEntity> foundUser = userDao.findByEmail(itemDto.getFoundBy());
+        Optional<UserEntity> foundUser = userDao.findByEmail(itemDto.getEmail());
         if(!foundItem.isPresent()) {
             throw new ItemNotFoundException("Item Not Found");
+        }
+        if(!foundUser.isPresent()) {
+            throw new UserNotFoundException("user not found");
         }
 
         foundItem.get().setItemStatus(ItemStatuses.FOUND);
@@ -80,6 +89,15 @@ public class ItemServiceImpl implements ItemService {
         }
         return entityDtoConverter.convertItemEntityToItemDto(itemDao.getReferenceById(itemId));
 
+    }
+
+    @Override
+    public List<ItemDto> getItemsByEmail(String email) {
+        Optional<UserEntity> foundUser = userDao.findByEmail(email);
+        if(!foundUser.isPresent()) {
+            throw new ItemNotFoundException("User Not Found");
+        }
+        return entityDtoConverter.toItemDtoList(itemDao.findByReportedBy(foundUser.get().getUserId()));
     }
 
     @Override
