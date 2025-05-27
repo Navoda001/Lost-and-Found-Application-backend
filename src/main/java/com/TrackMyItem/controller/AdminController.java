@@ -28,7 +28,7 @@ public class AdminController {
 
 
     @DeleteMapping
-    public ResponseEntity<Void> deleteAdmin(@RequestBody String email) {
+    public ResponseEntity<Void> deleteAdmin(@RequestParam("email") String email) {
         if (email == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -63,7 +63,7 @@ public class AdminController {
     }
 
     @GetMapping("getAdminByEmail")
-    public ResponseEntity<AdminDto> getAdminByEmail(@RequestBody String email) {
+    public ResponseEntity<AdminDto> getAdminByEmail(@RequestParam("email") String email) {
         if (email == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
