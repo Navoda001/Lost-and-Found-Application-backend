@@ -8,9 +8,11 @@ import com.TrackMyItem.dto.Role;
 import com.TrackMyItem.dto.UserDto;
 import com.TrackMyItem.dto.secure.AllUsersDto;
 import com.TrackMyItem.dto.secure.JWTAuthResponse;
+import com.TrackMyItem.dto.secure.PasswordDto;
 import com.TrackMyItem.dto.secure.SignIn;
 import com.TrackMyItem.entity.UserEntity;
 import com.TrackMyItem.entity.secure.AllUsersEntity;
+import com.TrackMyItem.exception.PasswordUnmatchException;
 import com.TrackMyItem.exception.UserNotFoundException;
 import com.TrackMyItem.security.jwt.JWTUtils;
 import com.TrackMyItem.service.secure.AuthService;
@@ -94,30 +96,37 @@ public class AuthServiceImpl implements AuthService {
         return JWTAuthResponse.builder().token(generateToken).build();
     }
 
-    public void updateUserPassword(AllUsersDto allUsersDto) {
-        Optional<AllUsersEntity> foundedUser = allUsersDao.findByEmail(allUsersDto.getEmail());
+    public void updateUserPassword(PasswordDto dto) {
+        Optional<AllUsersEntity> foundedUser = allUsersDao.findByEmail(dto.getEmail());
         if(!foundedUser.isPresent()) {
             throw new UserNotFoundException("User Not Found");
         }
         Role role = foundedUser.get().getRole();
+        var current = foundedUser.get().getPassword();
+
+        if (!passwordEncoder.matches(dto.getCurrentPassword(), current)) {
+            throw new PasswordUnmatchException("Current Password Not Matched");
+        }
+
+
 
         if(role == Role.ADMIN){
-            var foundUserEntity = adminDao.findByEmail(allUsersDto.getEmail());
+            var foundUserEntity = adminDao.findByEmail(dto.getEmail());
             if(foundUserEntity.isPresent()){
                 foundUserEntity.get().setUpdatedAt(utilData.generateTodayDate());
             }
         }else if(role == Role.USER){
-            var foundUserEntity = userDao.findByEmail(allUsersDto.getEmail());
+            var foundUserEntity = userDao.findByEmail(dto.getEmail());
             if(foundUserEntity.isPresent()){
                 foundUserEntity.get().setUpdatedAt(utilData.generateTodayDate());
             }
         }else if(role == Role.STAFF){
-            var foundUserEntity = staffDao.findByEmail(allUsersDto.getEmail());
+            var foundUserEntity = staffDao.findByEmail(dto.getEmail());
             if(foundUserEntity.isPresent()){
                 foundUserEntity.get().setUpdatedAt(utilData.generateTodayDate());
             }
         }
-        foundedUser.get().setPassword(passwordEncoder.encode(allUsersDto.getPassword()));
+        foundedUser.get().setPassword(passwordEncoder.encode(dto.getNewPassword()));
     }
 
 }
