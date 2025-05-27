@@ -16,6 +16,7 @@ public class RequestAllDetailsDto {
     private String userId;
     private String userName;
     private RequestStatuses requestStatus;
+    private String image;
     private String message;
     private LocalDate requestDate;
     private LocalDate decisionDate;

@@ -15,4 +15,5 @@ public interface RequestService {
     List<RequestDto> getAllRequests();
     List<RequestItemDto> getAllItems();
     List<RequestAllDetailsDto> getAllRequestsByItemId(String itemId);
+    List<RequestAllDetailsDto> getAllRequestsByEmail(String email);
 }

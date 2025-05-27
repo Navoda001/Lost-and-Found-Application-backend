@@ -117,4 +117,21 @@ public class RequestController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("getRequestsByEmail")
+    public ResponseEntity<List<RequestAllDetailsDto>>  getAllRequestsByEmail(@RequestParam("email") String email){
+        if(email==null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        try {
+            return new ResponseEntity<>(requestService.getAllRequestsByEmail(email), HttpStatus.OK);
+        }catch (RequestNotFoundException e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
