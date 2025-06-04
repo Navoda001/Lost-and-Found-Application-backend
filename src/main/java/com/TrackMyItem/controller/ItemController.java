@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.awt.*;
@@ -21,6 +22,7 @@ public class ItemController {
     private final ItemService itemService;
     private static final Logger logger = LoggerFactory.getLogger(ItemController.class);
 
+    @PreAuthorize("hasRole('USER')")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> addItem(@RequestBody ItemDto itemDto) {
         logger.info("Call the addItem() with param {}",itemDto);
@@ -30,7 +32,7 @@ public class ItemController {
         itemService.addItem(itemDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
-
+    @PreAuthorize("hasRole('USER')")
     @DeleteMapping
     public ResponseEntity<Void> deleteItem(@RequestParam("itemId") String itemId) {
         logger.info("Call the deleteItem() with param: itemId={}",itemId);

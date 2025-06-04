@@ -58,9 +58,16 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/api/v1/auth/**").permitAll()
                                 .requestMatchers(HttpMethod.PATCH, "/api/v1/auth/changePassword").hasAnyRole("USER,ADMIN,STAFF")
-                                //  .anyRequest().permitAll()
-                                //                          .requestMatchers("/api/v1/books").hasRole("ADMIN")
-                                //                           .requestMatchers("/api/v1/books").hasAnyRole("OFFICER,LIBRARIAN")
+
+                                .requestMatchers(HttpMethod.POST, "/api/v1/items").hasRole("USER")
+                                .requestMatchers(HttpMethod.DELETE, "/api/v1/items").hasRole("USER")
+
+                                .requestMatchers(HttpMethod.POST, "/api/v1/requests").hasRole("USER")
+                                .requestMatchers(HttpMethod.PATCH, "/api/v1/requests").hasRole("STAFF")
+
+                                .requestMatchers(HttpMethod.POST, "/api/v1/admins").hasRole("ADMIN")
+
+                                .requestMatchers(HttpMethod.POST, "/api/v1/staffs").hasRole("ADMIN")
                                 .anyRequest().authenticated()
                 );
         http.authenticationProvider(daoAuthenticationProvider());
