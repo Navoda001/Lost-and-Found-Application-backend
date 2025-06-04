@@ -8,6 +8,8 @@ import com.TrackMyItem.exception.RequestAlreadyExistsException;
 import com.TrackMyItem.exception.RequestNotFoundException;
 import com.TrackMyItem.service.RequestService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +22,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RequestController {
     private final RequestService requestService;
-
+    private static final Logger logger = LoggerFactory.getLogger(RequestController.class);
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> createRequest(@RequestBody RequestDto requestDto) {
+        logger.info("Call the createRequest() with param {}",requestDto);
         if(requestDto==null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -36,7 +39,7 @@ public class RequestController {
 
     @DeleteMapping
     public ResponseEntity<Void> deleteRequest(@RequestParam("requestId") String requestId) {
-
+        logger.info("Call the deleteRequest() with param: requestId={}",requestId);
         if(requestId==null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -57,6 +60,7 @@ public class RequestController {
 
     @PatchMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateRequest (@RequestParam("requestId") String requestId, @RequestBody RequestDto requestDto){
+        logger.info("Call the updateRequest() with params: requestId={}, requestDto={}", requestId, requestDto);
         if(requestId==null || requestDto==null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -76,6 +80,7 @@ public class RequestController {
 
     @GetMapping
     public ResponseEntity<RequestDto> getRequest(@RequestParam("requestId") String requestId){
+        logger.info("Call the getRequest() with param: requestId={}",requestId);
         if(requestId==null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -93,16 +98,19 @@ public class RequestController {
 
     @GetMapping("getAllRequests")
     public ResponseEntity<List<RequestDto>> getAllRequests() {
+        logger.info("Call the getAllRequests()");
         return new ResponseEntity<>(requestService.getAllRequests(), HttpStatus.OK);
     }
 
     @GetMapping("getAllItems")
     public ResponseEntity<List<RequestItemDto>> getAllItems() {
+        logger.info("Call the getAllItems()");
         return new ResponseEntity<>(requestService.getAllItems(), HttpStatus.OK);
     }
 
     @GetMapping("getRequestsByItemId")
     public ResponseEntity<List<RequestAllDetailsDto>>  getRequestsByItemId(@RequestParam("itemId") String itemId){
+        logger.info("Call the getRequestsByItemId() with param: itemId={}",itemId);
         if(itemId==null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -120,6 +128,7 @@ public class RequestController {
 
     @GetMapping("getRequestsByEmail")
     public ResponseEntity<List<RequestAllDetailsDto>>  getAllRequestsByEmail(@RequestParam("email") String email){
+        logger.info("Call the getAllRequestsByEmail() with param: email={}",email);
         if(email==null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

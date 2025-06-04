@@ -21,6 +21,7 @@ import java.util.List;
 public class AllUsersEntity implements Serializable , UserDetails {
     @Id
     private String userId;
+    @Column(unique = true, nullable = false)
     private String email;
     private String password;
     @Enumerated(EnumType.STRING)

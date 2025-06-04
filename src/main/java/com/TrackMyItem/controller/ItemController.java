@@ -4,6 +4,8 @@ import com.TrackMyItem.dto.ItemDto;
 import com.TrackMyItem.exception.ItemNotFoundException;
 import com.TrackMyItem.service.ItemService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +19,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemController {
     private final ItemService itemService;
+    private static final Logger logger = LoggerFactory.getLogger(ItemController.class);
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> addItem(@RequestBody ItemDto itemDto) {
+        logger.info("Call the addItem() with param {}",itemDto);
         if(itemDto== null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -29,6 +33,7 @@ public class ItemController {
 
     @DeleteMapping
     public ResponseEntity<Void> deleteItem(@RequestParam("itemId") String itemId) {
+        logger.info("Call the deleteItem() with param: itemId={}",itemId);
         if(itemId == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -46,6 +51,8 @@ public class ItemController {
 
     @PatchMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateItem(@RequestParam("itemId") String itemId ,@RequestBody ItemDto itemDto) {
+        logger.info("Call the updateItem() with params: itemId={}, itemDto={}", itemId, itemDto);
+
         if(itemDto==null || itemId == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -63,6 +70,7 @@ public class ItemController {
 
     @GetMapping
     public ResponseEntity<ItemDto> getItemById(@RequestParam("itemId") String itemId) {
+        logger.info("Call the getItemById() with param: itemId={}",itemId);
         if(itemId == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -81,6 +89,7 @@ public class ItemController {
 
     @GetMapping("getItemsByEmail")
     public ResponseEntity<List<ItemDto>> getItemsByEmail(@RequestParam("email") String email) {
+        logger.info("Call the getItemsByEmail() with param: email={}",email);
         if(email == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -98,6 +107,7 @@ public class ItemController {
 
     @GetMapping("getAllItems")
     public ResponseEntity<List<ItemDto>> getAllItems() {
+        logger.info("Call the getAllItems() ");
         return new ResponseEntity<>(itemService.getAllItems(), HttpStatus.OK);
     }
 }
