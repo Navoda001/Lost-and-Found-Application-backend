@@ -21,7 +21,7 @@ import java.util.List;
 public class StaffController {
 
     private final StaffService staffService;
-    private static final Logger logger = LoggerFactory.getLogger(RequestController.class);
+    private static final Logger logger = LoggerFactory.getLogger(StaffController.class);
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> addStaff(@RequestBody StaffDto staffDto) {

@@ -20,7 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-    private static final Logger logger = LoggerFactory.getLogger(RequestController.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @DeleteMapping
     public ResponseEntity<Void> deleteUser(@RequestParam String email) {
