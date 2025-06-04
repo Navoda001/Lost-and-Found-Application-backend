@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +24,8 @@ import java.util.List;
 public class RequestController {
     private final RequestService requestService;
     private static final Logger logger = LoggerFactory.getLogger(RequestController.class);
+
+    @PreAuthorize("hasRole('USER')")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> createRequest(@RequestBody RequestDto requestDto) {
         logger.info("Call the createRequest() with param {}",requestDto);
@@ -57,7 +60,7 @@ public class RequestController {
 
     }
 
-
+    @PreAuthorize("hasRole('STAFF')")
     @PatchMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateRequest (@RequestParam("requestId") String requestId, @RequestBody RequestDto requestDto){
         logger.info("Call the updateRequest() with params: requestId={}, requestDto={}", requestId, requestDto);
